@@ -3,16 +3,17 @@ module Api
     class HabitsController < ApplicationController
       before_action :require_authentication
 
-      # GET /api/v1/habits
       def show
-        render json: {
-          id: current_user.id,
-          email: current_user.email,
-          name: current_user.name
-        }
+        render json: Habit.all, serializer: HabitSerializer
       end
 
-      # PUT /api/v1/profile
+      def get_habits_for_user
+        habits = Habit.where(user_id: current_user.id)
+        render json: habits, serializer: HabitSerializer
+      end
+
+
+
       def update
         if current_user.update(profile_params)
           render json: {
