@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import Calendar from 'react-calendar';
 import './calendar.css';
 import { useForm } from "react-hook-form";
-import { upsertHighLow, getHighLowByDate } from '../../services/highLowService';
+// import { upsertHighLow, getHighLowByDate } from '../../services/highLowService';
 
   type HighLowFormData = {
     high_content: string;
@@ -64,8 +64,11 @@ export const HighLow = () => {
     const loadHighLow = async () => {
       try {
         const dateString = dateSelected.toISOString().split('T')[0];
-        const existingEntry = await getHighLowByDate(dateString);
-        
+        // const existingEntry = await getHighLowByDate(dateString);
+        const existingEntry = {
+          high_content: 'This is a test high content',
+          low_content: 'This is a test low content',
+        };
         if (existingEntry) {
           reset({
             high_content: existingEntry.high_content,
@@ -103,11 +106,11 @@ export const HighLow = () => {
     setIsLoading(true);
     try {
       const dateString = dateSelected.toISOString().split('T')[0];
-      await upsertHighLow({
-        high_content: data.high_content,
-        low_content: data.low_content,
-        date: dateString
-      });
+      // await upsertHighLow({
+      //   high_content: data.high_content,
+      //   low_content: data.low_content,
+      //   date: dateString
+      // });
       toast({
         title: 'Saved!',
         description: 'Your high and low have been saved.',

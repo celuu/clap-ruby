@@ -120,16 +120,28 @@ export const LoginPage = () => {
 
   return (
     <Container maxW="md" p={4}>
-      <Text>
-        Hi Jacob, sorry, I am actually not ready to show this yet. Please check back later. I wanted
-        to get more done but I had a takehome to do so I want to get those things done before you
-        take a look! I miss you sm! 🥲😭
-      </Text>
       <VStack spacing={4} align="center" justify="center" h="100vh">
         <Heading size="lg">{isSignUp ? 'Sign Up' : 'Login'}</Heading>
 
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%' }}>
           <VStack spacing={4} width="100%">
+                        {isSignUp && (
+              <FormControl isRequired>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  type="text"
+                  {...register('name', {
+                    required: isSignUp ? 'Name is required' : false,
+                  })}
+                />
+                {errors.name && (
+                  <Text color="red.500" fontSize="sm">
+                    {errors.name.message}
+                  </Text>
+                )}
+              </FormControl>
+            )}
+            
             <FormControl isRequired>
               <FormLabel>Email</FormLabel>
               <Input
@@ -175,27 +187,13 @@ export const LoginPage = () => {
                 </Text>
               )}
             </FormControl>
+            {!isSignUp && (
             <Checkbox isChecked={!!saveUsernameToStorage} onChange={() => setSaveUsernameToStorage(!saveUsernameToStorage)} alignSelf={'flex-start'}>
               Save Username
             </Checkbox>
-            
-            {isSignUp && (
-              <FormControl isRequired>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  type="text"
-                  {...register('name', {
-                    required: isSignUp ? 'Name is required' : false,
-                  })}
-                />
-                {errors.name && (
-                  <Text color="red.500" fontSize="sm">
-                    {errors.name.message}
-                  </Text>
-                )}
-              </FormControl>
             )}
             
+
             {isSignUp && (
               <FormControl isRequired>
                 <FormLabel>Confirm Password</FormLabel>

@@ -6,7 +6,6 @@ import { Sidebar } from './Sidebar';
 import { Layout } from './Layout';
 import { Header } from './Header';
 import { getCurrentUser } from '../services/loginService';
-import { getProfile } from '../services/userService';
 
 // Custom icons
 const TargetIcon = () => (
@@ -40,13 +39,8 @@ export const AppLayout = () => {
         if (!user) {
           navigate('/login');
         } else {
-          const profile = await getProfile();
-          setIsAuthenticated(true)
-          if (!profile) {
-            setUserName("girlie")
-          } else {
-            setUserName(profile.first_name);
-          }
+          setIsAuthenticated(true);
+          setUserName(user.name);
         }
       } catch (error) {
         console.error('Auth check error:', error);

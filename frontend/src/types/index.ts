@@ -3,7 +3,7 @@
 export interface User {
   id: string;
   email: string;
-  // Add more fields as needed
+  name: string;
 }
 
 export interface Weather {

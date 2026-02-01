@@ -1,4 +1,4 @@
-import { createProfile } from "../../services/userService";
+import { createHabit } from "../../services/habitService";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, Input, FormLabel, FormControl, Textarea, Button, ModalFooter, HStack, ModalCloseButton, useToast } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
@@ -26,7 +26,7 @@ export const UserModal = ({ isOpen, onClose }: UserModalProps) => {
 
   const onSubmit = async (data: UserFormData) => {
   try {
-    await createProfile(data);
+
 
     toast({
       title: 'Profile created',

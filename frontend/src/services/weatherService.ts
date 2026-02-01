@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 
 // src/services/weatherService.ts
 const WEATHER_API = process.env.REACT_APP_WEATHER_API;
