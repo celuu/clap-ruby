@@ -16,10 +16,6 @@ import { Card } from '../../components/Card';
 import { SectionHeader } from '../../components/SectionHeader';
 import { ScheduleItem } from '../../components/ScheduleItem';
 import { HabitItem } from '../../components/HabitItem';
-import { getProfile } from '../../services/userService';
-import { useEffect, useState } from 'react';
-import { Profile } from '../../types';
-import { UserModal } from '../Login/UserModal';
 
 // Custom icons as components
 const FireIcon = () => (
@@ -55,26 +51,8 @@ const TargetIcon = () => (
 export const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [profile, setProfile] = useState<Profile | null>(null);
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const profile = await getProfile();
-        if (!profile) {
-          setProfile(null)
-        } else {
-          setProfile(profile);
-        }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-      }
-    };
-    fetchProfile();
-  }, []);
   return (
     <>
-      {!profile && <UserModal isOpen={isOpen} onClose={onClose} />}
-
       <Container maxW="container.xl" py={8}>
         <VStack spacing={8} align="stretch">
           {/* Top Stats Grid */}

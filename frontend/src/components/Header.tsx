@@ -1,60 +1,59 @@
 import { Box, HStack, VStack, Text, Button, Icon, Badge, Tag } from '@chakra-ui/react';
 import { AddIcon, SunIcon } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
-// import { weatherService } from '../services/weatherService';
+import { weatherService } from '../services/weatherService';
 import { Profile, Weather } from '../types';
 import { getWeatherIcon } from '../utils/weatherIcons'
-// import { getProfile } from '../services/userService';
 
 type HeaderProps = {
   userName: string | null
 }
 
 export const Header = ({userName}: HeaderProps) => {
-  // const [weather, setWeather] = useState<Weather | null>(null);
-  // useEffect(() => {
-  //   weatherService.getCurrentWeather().then((data: Weather) => setWeather(data));
-  // }, []);
+  const [weather, setWeather] = useState<Weather | null>(null);
+  useEffect(() => {
+    weatherService.getCurrentWeather().then((data: Weather) => setWeather(data));
+  }, []);
 
-  // const weatherIcon = getWeatherIcon(weather?.description || 'sunny');
+  const weatherIcon = getWeatherIcon(weather?.description || 'sunny');
 
-  // const today = new Date().toLocaleDateString('en-US', {
-  //   weekday: 'long',
-  //   month: 'long',
-  //   day: 'numeric',
-  //   year: 'numeric',
-  // });
-  // const todayPST = new Date(today);
-  // todayPST.setHours(0, 0, 0, 0);
+  const today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  const todayPST = new Date(today);
+  todayPST.setHours(0, 0, 0, 0);
 
-  // const targetDate = new Date('2026-07-20T00:00:00-07:00'); // July 20, 2026 midnight PST
+  const targetDate = new Date('2026-07-20T00:00:00-07:00'); // July 20, 2026 midnight PST
 
-  // const countDownToJuly20 = Math.ceil(
-  //   (targetDate.getTime() - todayPST.getTime()) / (1000 * 60 * 60 * 24)
-  // );
-  // const startOfYear = new Date(todayPST.getFullYear(), 0, 1);
-  // const dayOfTheYear =
-  //   Math.floor((todayPST.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+  const countDownToJuly20 = Math.ceil(
+    (targetDate.getTime() - todayPST.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  const startOfYear = new Date(todayPST.getFullYear(), 0, 1);
+  const dayOfTheYear =
+    Math.floor((todayPST.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 
-  // const getGreeting = () => {
-  //   const hour = new Date().getHours();
+  const getGreeting = () => {
+    const hour = new Date().getHours();
 
-  //   if (hour < 12) return 'Good morning';
-  //   if (hour < 18) return 'Good afternoon';
-  //   return 'Good evening';
-  // };
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  };
 
   return (
     <Box w="full" bg="white" borderBottom="1px" borderColor="gray.200" px={8} py={6}>
       <HStack justify="space-between" align="center">
         <VStack align="flex-start" spacing={1}>
           <Text fontSize="3xl" fontWeight="bold">
-            {/* {getGreeting()}, {userName} */}
+            {getGreeting()}, {userName}
           </Text>
-          {/* <Text fontSize="md" color="gray.500">
+          <Text fontSize="md" color="gray.500">
             {today} - {countDownToJuly20} days to July 20th - Day {dayOfTheYear} / 365 (
             {((dayOfTheYear / 365) * 100).toFixed(2)}% complete)
-          </Text> */}
+          </Text>
         </VStack>
 
         <HStack spacing={2}>

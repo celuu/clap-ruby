@@ -8,10 +8,9 @@ Rails.application.routes.draw do
       get '/current_user', to: 'sessions#show'
       
       # Profile routes
-      get '/profile', to: 'profiles#show'
-      put '/profile', to: 'profiles#update'
-      
-      # Add your habit and other resource routes here
+     resources :habits
+     resources :habit_completions
+
     end
   end
 end
