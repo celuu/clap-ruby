@@ -121,7 +121,7 @@ export const useCreateHabitCompletion = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [habitCompletion, setHabitCompletion] = useState<HabitCompletion | null>(null);
 
-  const execute = useCallback(async (habitCompletion: { habit_id: string; completed_at: string | null }) => {
+  const execute = useCallback(async (habitCompletion: { habit_id: string }) => {
     setLoading(true);
     setError(null);
     try {

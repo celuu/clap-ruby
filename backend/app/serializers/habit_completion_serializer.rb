@@ -1,4 +1,5 @@
 class HabitCompletionSerializer < ActiveModel::Serializer
-  attributes :id, :habit_id, :completed_at
+  attributes :id, :habit_id, :completed_at, is_completed
+
 
 end

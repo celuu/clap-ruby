@@ -15,6 +15,7 @@ export interface Habit {
   id: string;
   label: string;
   weekly_target: number;
+  is_completed: boolean;
 }
 export interface HabitCompletion {
   id: string;
