@@ -10,7 +10,7 @@ module Api
 
       def create
         habit_completion = current_user.habit_completions.build(habit_completion_params)
-        
+        habit_completion.completed_at = Time.current        
         if habit_completion.save
           render json: habit_completion, serializer: HabitCompletionSerializer, status: :created
         else
@@ -33,7 +33,7 @@ module Api
       private
 
       def habit_completion_params
-        params.require(:habit_completion).permit(:habit_id, :completed_at)
+        params.require(:habit_completion).permit(:habit_id)
       end
     end
   end

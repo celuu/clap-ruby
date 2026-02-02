@@ -1,10 +1,9 @@
 import { Container, VStack, Text, Grid, Button, HStack, useDisclosure, Spinner, Center } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SingleHabit } from './SingleHabit';
 import { useGetHabits } from '../../services/habitService';
 import { AddIcon } from '@chakra-ui/icons';
 import { CreateHabitModal } from './CreateHabitModal';
-import { Habit } from '@/types';
 
 export const HabitTracker = () => {
   const { habits, error, loading, execute } = useGetHabits();

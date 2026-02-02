@@ -121,13 +121,13 @@ export const useCreateHabitCompletion = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [habitCompletion, setHabitCompletion] = useState<HabitCompletion | null>(null);
 
-  const execute = useCallback(async (habitCompletion: { habit_id: string }) => {
+  const execute = useCallback(async (habit_completion: { habit_id: string }) => {
     setLoading(true);
     setError(null);
     try {
       const data = await fetchWithCredentials(API_ENDPOINTS.habitCompletions, {
         method: 'POST',
-        body: JSON.stringify({ habitCompletion }),
+        body: JSON.stringify({ habit_completion }),
       });
       setHabitCompletion(data);
     } catch (err: any) {
