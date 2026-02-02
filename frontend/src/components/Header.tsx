@@ -11,8 +11,21 @@ type HeaderProps = {
 
 export const Header = ({userName}: HeaderProps) => {
   const [weather, setWeather] = useState<Weather | null>(null);
+  
   useEffect(() => {
-    weatherService.getCurrentWeather().then((data: Weather) => setWeather(data));
+    weatherService
+      .getCurrentWeather()
+      .then((data: Weather) => setWeather(data))
+      .catch((error) => {
+        console.error('Failed to load weather:', error);
+        // Set default weather on error
+        setWeather({
+          temperature: 72,
+          description: 'partly cloudy',
+          humidity: 65,
+          windSpeed: 5,
+        });
+      });
   }, []);
 
   const weatherIcon = getWeatherIcon(weather?.description || 'sunny');
@@ -65,15 +78,15 @@ export const Header = ({userName}: HeaderProps) => {
             px={4}
             py={2}
           >
-            <VStack>
+            <VStack spacing={1}>
               <HStack spacing={2}>
-                {/* <Icon as={weatherIcon.icon} color={weatherIcon.color} boxSize={5} />
+                <Icon as={weatherIcon.icon} color={weatherIcon.color} boxSize={5} />
                 <Text fontSize="md" color="gray.800" fontWeight="bold">
                   {weather?.temperature}°F
                 </Text>
                 <Text fontSize="md" color="gray.500">
                   {weather?.description}
-                </Text> */}
+                </Text>
               </HStack>
               <Text fontSize="xs" color="gray.500">
                 Dublin, CA

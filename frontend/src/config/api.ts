@@ -8,19 +8,16 @@ export const API_ENDPOINTS = {
   logout: `${API_BASE_URL}/api/v1/logout`,
   currentUser: `${API_BASE_URL}/api/v1/current_user`,
   
-  // Profile endpoints
-  profile: `${API_BASE_URL}/api/v1/profile`,
-  
-  // Add your habit and other endpoints here
-  // habits: `${API_BASE_URL}/api/v1/habits`,
-  // habitCompletions: `${API_BASE_URL}/api/v1/habit_completions`,
+  // Habit endpoints
+  habits: `${API_BASE_URL}/api/v1/habits`,
+  habitCompletions: `${API_BASE_URL}/api/v1/habit_completions`,
   // highLows: `${API_BASE_URL}/api/v1/high_lows`,
 };
 
 // Helper function for API calls with credentials
 export const fetchWithCredentials = async (url: string, options: RequestInit = {}) => {
   const defaultOptions: RequestInit = {
-    credentials: 'include', // Important for sending cookies
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,

@@ -1,3 +1,3 @@
 class HabitSerializer < ActiveModel::Serializer
-  attributes :id, :name, :user_id
+  attributes :id, :label, :weekly_target
 end

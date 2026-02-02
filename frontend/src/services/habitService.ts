@@ -1,54 +1,160 @@
-// TODO: Implement habit service with Rails backend
-// This is a placeholder - you'll need to create the Rails models and controllers first
+import { API_ENDPOINTS, fetchWithCredentials } from '../config/api';
+import { useState, useEffect, useCallback } from 'react';
+import { Habit, HabitCompletion } from '../types';
 
-import { API_BASE_URL, fetchWithCredentials } from '../config/api';
+export const useGetHabits = () => {
+  const [habits, setHabits] = useState<Habit[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-// Habit
-export const getHabits = async () => {
-  // TODO: Implement after creating Rails Habit model and controller
-  // const data = await fetchWithCredentials(`${API_BASE_URL}/api/v1/habits`);
-  // return data;
-  console.warn('getHabits: Not yet implemented - create Rails Habit model first');
-  return [];
+  const execute = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchWithCredentials(API_ENDPOINTS.habits);
+      setHabits(data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to fetch habits');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { habits, error, loading, execute };
 };
 
-export const createHabit = async (habit: { label: string; weekly_target: number }) => {
-  // TODO: Implement after creating Rails Habit model and controller
-  // const data = await fetchWithCredentials(`${API_BASE_URL}/api/v1/habits`, {
-  //   method: 'POST',
-  //   body: JSON.stringify({ habit }),
-  // });
-  // return data;
-  console.warn('createHabit: Not yet implemented - create Rails Habit model first');
-  return null;
+export const useCreateHabit = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [habit, setHabit] = useState<Habit | null>(null);
+
+  const execute = useCallback(async (habit: { label: string; weekly_target: number }): Promise<Habit> => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchWithCredentials(API_ENDPOINTS.habits, {
+        method: 'POST',
+        body: JSON.stringify({ habit }),
+      });
+      setHabit(data);
+      return data;
+    } catch (err: any) {
+      const errorMessage = err.message || 'Failed to create habit';
+      setError(errorMessage);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  return { habit, error, loading, execute };
+}; 
+
+export const useUpdateHabit = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [habit, setHabit] = useState<Habit | null>(null);
+
+  const execute = useCallback(async (habit: { label: string; weekly_target: number }) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchWithCredentials(API_ENDPOINTS.habits, {
+        method: 'PUT',
+        body: JSON.stringify({ habit }),
+      });
+      setHabit(data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to update habit');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  return { habit, error, loading, execute };
 };
 
-export const deleteHabit = async (id: string) => {
-  // TODO: Implement after creating Rails Habit model and controller
-  // await fetchWithCredentials(`${API_BASE_URL}/api/v1/habits/${id}`, {
-  //   method: 'DELETE',
-  // });
-  console.warn('deleteHabit: Not yet implemented - create Rails Habit model first');
-  return 204;
+export const useDeleteHabit = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [habit, setHabit] = useState<Habit | null>(null);
+
+  const execute = useCallback(async (id: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchWithCredentials(`${API_ENDPOINTS.habits}/${id}`, {
+        method: 'DELETE',
+      }); 
+      setHabit(data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete habit');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  return { habit, error, loading, execute };
 };
 
-// Habit Completion
-export const createHabitCompletion = async (habitCompletion: { habit_id: string; completed_at: string | null }) => {
-  // TODO: Implement after creating Rails HabitCompletion model and controller
-  // const data = await fetchWithCredentials(`${API_BASE_URL}/api/v1/habit_completions`, {
-  //   method: 'POST',
-  //   body: JSON.stringify({ habit_completion: habitCompletion }),
-  // });
-  // return data;
-  console.warn('createHabitCompletion: Not yet implemented - create Rails HabitCompletion model first');
-  return null;
+export const useGetHabitCompletions = () => {
+  const [habitCompletions, setHabitCompletions] = useState<HabitCompletion[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const execute = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchWithCredentials(API_ENDPOINTS.habitCompletions);
+      setHabitCompletions(data);
+    } catch (err: any) { 
+      setError(err.message || 'Failed to fetch habit completions');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  return { habitCompletions, error, loading, execute };
 };
 
-export const deleteHabitCompletion = async (id: string) => {
-  // TODO: Implement after creating Rails HabitCompletion model and controller
-  // await fetchWithCredentials(`${API_BASE_URL}/api/v1/habit_completions/${id}`, {
-  //   method: 'DELETE',
-  // });
-  console.warn('deleteHabitCompletion: Not yet implemented - create Rails HabitCompletion model first');
-  return null;
+export const useCreateHabitCompletion = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [habitCompletion, setHabitCompletion] = useState<HabitCompletion | null>(null);
+
+  const execute = useCallback(async (habitCompletion: { habit_id: string; completed_at: string | null }) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchWithCredentials(API_ENDPOINTS.habitCompletions, {
+        method: 'POST',
+        body: JSON.stringify({ habitCompletion }),
+      });
+      setHabitCompletion(data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to create habit completion');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  return { habitCompletion, error, loading, execute };
+};
+
+export const useDeleteHabitCompletion = () => {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [habitCompletion, setHabitCompletion] = useState<HabitCompletion | null>(null);
+
+  const execute = useCallback(async (id: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchWithCredentials(`${API_ENDPOINTS.habitCompletions}/${id}`, {
+        method: 'DELETE',
+      });
+      setHabitCompletion(data);
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete habit completion');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  return { habitCompletion, error, loading, execute };
 };

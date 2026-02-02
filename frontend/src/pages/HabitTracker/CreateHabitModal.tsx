@@ -1,6 +1,6 @@
-import { Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, Input, Button, ModalFooter, VStack, FormErrorMessage, FormLabel, FormControl } from "@chakra-ui/react";
+import { Text, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, Input, Button, ModalFooter, VStack, FormErrorMessage, FormLabel, FormControl, useToast } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { createHabit as createHabitService } from '../../services/habitService';
+import { useCreateHabit } from '../../services/habitService';
 import { Habit } from "@/types";
 
 type CreateHabitModalProps = {
@@ -16,6 +16,8 @@ type HabitFormData = {
 }
 
 export const CreateHabitModal = ({ isOpen, onClose, existingHabit, onCreated }: CreateHabitModalProps) => {
+  const { execute, error, loading, habit } = useCreateHabit();
+  const toast = useToast();
   const { register, handleSubmit, formState: { errors }, watch } = useForm<HabitFormData>({
     defaultValues: {
       label: existingHabit?.label ?? '',
@@ -26,12 +28,26 @@ export const CreateHabitModal = ({ isOpen, onClose, existingHabit, onCreated }: 
   const formData = watch();
 
   const onSubmit = async (data: HabitFormData) => {
-    await createHabitService({
-      label: data.label,
-      weekly_target: data.weekly_target,
-    });
-    onCreated?.(data as Habit);
-    onClose();
+    try {
+      const createdHabit = await execute({
+        label: data.label,
+        weekly_target: data.weekly_target,
+      });
+      
+      onCreated?.(createdHabit);
+      toast({
+        title: 'Success',
+        description: 'Habit created successfully!',
+        status: 'success',
+      });
+      onClose();
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: error || 'Failed to create habit',
+        status: 'error',
+      });
+    }
   };
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>

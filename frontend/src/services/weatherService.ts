@@ -7,6 +7,18 @@ export const weatherService = {
   async getCurrentWeather() {
     const latitude = 37.7117984000001;
     const longitude = -121.88571939417722;
+    
+    // Return mock data if API key is not configured
+    if (!WEATHER_API) {
+      console.warn('Weather API key not configured. Using mock data.');
+      return {
+        temperature: 72,
+        description: 'partly cloudy',
+        humidity: 65,
+        windSpeed: 5,
+      };
+    }
+
     try {
       const response = await fetch(
         `${BASE_URL}/weather?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API}&units=imperial`
@@ -18,16 +30,20 @@ export const weatherService = {
 
       const data = await response.json();
       return {
-        temperature: data.main.temp,
+        temperature: Math.round(data.main.temp),
         description: data.weather[0].description,
         humidity: data.main.humidity,
         windSpeed: data.wind.speed,
       };
-
-
     } catch (error) {
       console.error('Weather API error:', error);
-      throw error;
+      // Return mock data on error
+      return {
+        temperature: 72,
+        description: 'partly cloudy',
+        humidity: 65,
+        windSpeed: 5,
+      };
     }
   },
 
