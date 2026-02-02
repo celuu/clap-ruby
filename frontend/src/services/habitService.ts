@@ -77,7 +77,7 @@ export const useDeleteHabit = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [habit, setHabit] = useState<Habit | null>(null);
 
-  const execute = useCallback(async (id: string) => {
+  const execute = useCallback(async (id: string): Promise<void> => {
     setLoading(true);
     setError(null);
     try {
@@ -86,7 +86,9 @@ export const useDeleteHabit = () => {
       }); 
       setHabit(data);
     } catch (err: any) {
-      setError(err.message || 'Failed to delete habit');
+      const errorMessage = err.message || 'Failed to delete habit';
+      setError(errorMessage);
+      throw err;
     } finally {
       setLoading(false);
     }

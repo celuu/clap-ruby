@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_02_02_000001) do
+ActiveRecord::Schema[7.0].define(version: 2026_02_02_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "habit_completions", force: :cascade do |t|
-    t.bigint "users_id", null: false
-    t.bigint "habits_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "habit_id", null: false
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["habits_id"], name: "index_habit_completions_on_habits_id"
-    t.index ["users_id"], name: "index_habit_completions_on_users_id"
+    t.index ["habit_id"], name: "index_habit_completions_on_habit_id"
+    t.index ["user_id"], name: "index_habit_completions_on_user_id"
   end
 
   create_table "habits", force: :cascade do |t|
@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_02_02_000001) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "habit_completions", "habits", column: "habits_id"
-  add_foreign_key "habit_completions", "users", column: "users_id"
+  add_foreign_key "habit_completions", "habits"
+  add_foreign_key "habit_completions", "users"
   add_foreign_key "habits", "users"
 end

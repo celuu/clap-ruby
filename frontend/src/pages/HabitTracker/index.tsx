@@ -50,7 +50,7 @@ export const HabitTracker = () => {
                 <Text color="gray.500">No habits yet. Create one to get started!</Text>
               )}
               {habits.map((habit) => (
-                <SingleHabit key={habit.id} habit={habit} />
+                <SingleHabit key={habit.id} habit={habit} onDeleted={() => execute()} />
               ))}
             </Grid>
           )}
