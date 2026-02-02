@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       
       # Profile routes
      resources :habits
-     resources :habit_completions
+     resources :habit_completions, only: [:create, :destroy]
 
     end
   end

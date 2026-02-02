@@ -8,4 +8,8 @@ class Habit < ApplicationRecord
   def is_completed
     habit_completions.exists?(completed_at: Time.zone.today.all_day)
   end
+
+  def completion_id
+    habit_completions.find_by(completed_at: Time.zone.today.all_day)&.id
+  end
 end

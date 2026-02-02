@@ -150,13 +150,15 @@ export const useDeleteHabitCompletion = () => {
     try {
       const data = await fetchWithCredentials(`${API_ENDPOINTS.habitCompletions}/${id}`, {
         method: 'DELETE',
-      });
+      }); 
       setHabitCompletion(data);
     } catch (err: any) {
-      setError(err.message || 'Failed to delete habit completion');
+      const errorMessage = err.message || 'Failed to delete habit completion';
+      setError(errorMessage);
+      throw err;
     } finally {
       setLoading(false);
     }
-  }, []);
-  return { habitCompletion, error, loading, execute };
+  }, []); 
+  return { habitCompletion, error, loading, execute }
 };
