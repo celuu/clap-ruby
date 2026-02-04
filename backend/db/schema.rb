@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_02_02_000002) do
+ActiveRecord::Schema[7.0].define(version: 2026_02_04_214612) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "daily_high_low_tables", force: :cascade do |t|
+    t.date "date"
+    t.text "high_content"
+    t.text "low_content"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_daily_high_low_tables_on_user_id"
+  end
 
   create_table "habit_completions", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -41,6 +51,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_02_02_000002) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "daily_high_low_tables", "users"
   add_foreign_key "habit_completions", "habits"
   add_foreign_key "habit_completions", "users"
   add_foreign_key "habits", "users"
