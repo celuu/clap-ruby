@@ -11,7 +11,7 @@ export const API_ENDPOINTS = {
   // Habit endpoints
   habits: `${API_BASE_URL}/api/v1/habits`,
   habitCompletions: `${API_BASE_URL}/api/v1/habit_completions`,
-  // highLows: `${API_BASE_URL}/api/v1/high_lows`,
+  dailyHighLows: `${API_BASE_URL}/api/v1/daily_high_lows`,
 };
 
 // Helper function for API calls with credentials

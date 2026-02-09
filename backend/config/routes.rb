@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       # Profile routes
      resources :habits
      resources :habit_completions, only: [:create, :destroy]
-
+     resources :daily_high_lows, only: [:show, :create, :update]
     end
   end
 end

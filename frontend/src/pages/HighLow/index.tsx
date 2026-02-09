@@ -3,7 +3,8 @@ import { useState, useMemo, useEffect } from "react";
 import Calendar from 'react-calendar';
 import './calendar.css';
 import { useForm } from "react-hook-form";
-// import { upsertHighLow, getHighLowByDate } from '../../services/highLowService';
+import { useCreateDailyHighLow, getHighLowByDate } from '../../services/highLowService';
+
 
   type HighLowFormData = {
     high_content: string;
@@ -14,7 +15,7 @@ export const HighLow = () => {
     const toast = useToast();
     const [dateSelected, setDateSelected] = useState<Date>(new Date());
     const [isLoading, setIsLoading] = useState(false);
-    
+    const { error: createDailyHighLowError, loading: createDailyHighLowLoading, execute: createDailyHighLowExecute   } = useCreateDailyHighLow();
     const { register, handleSubmit, formState: { errors }, reset, watch} = useForm<HighLowFormData>({
       defaultValues: {
         high_content: '',
