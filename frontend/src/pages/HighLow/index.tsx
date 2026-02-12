@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect } from "react";
 import Calendar from 'react-calendar';
 import './calendar.css';
 import { useForm } from "react-hook-form";
-import { useCreateDailyHighLow, getHighLowByDate } from '../../services/highLowService';
+import { useCreateDailyHighLow, useGetHighLowByDate } from '../../services/highLowService';
 
 
   type HighLowFormData = {
@@ -16,10 +16,11 @@ export const HighLow = () => {
     const [dateSelected, setDateSelected] = useState<Date>(new Date());
     const [isLoading, setIsLoading] = useState(false);
     const { error: createDailyHighLowError, loading: createDailyHighLowLoading, execute: createDailyHighLowExecute   } = useCreateDailyHighLow();
+    const { dailyHighLow, error: getDailyHighLowError, loading: getDailyHighLowLoading, execute: getDailyHighLowExecute } = useGetHighLowByDate();
     const { register, handleSubmit, formState: { errors }, reset, watch} = useForm<HighLowFormData>({
       defaultValues: {
-        high_content: '',
-        low_content: '',
+        high_content: dailyHighLow?.high_content || '',
+        low_content: dailyHighLow?.low_content || '',
       }
     });
 
@@ -65,22 +66,7 @@ export const HighLow = () => {
     const loadHighLow = async () => {
       try {
         const dateString = dateSelected.toISOString().split('T')[0];
-        // const existingEntry = await getHighLowByDate(dateString);
-        const existingEntry = {
-          high_content: 'This is a test high content',
-          low_content: 'This is a test low content',
-        };
-        if (existingEntry) {
-          reset({
-            high_content: existingEntry.high_content,
-            low_content: existingEntry.low_content,
-          });
-        } else {
-          reset({
-            high_content: '',
-            low_content: '',
-          });
-        }
+        await getDailyHighLowExecute(dateString);
       } catch (error: any) {
         console.error('Error details:', {
           message: error.message,
@@ -106,12 +92,11 @@ export const HighLow = () => {
   const onSubmit = async (data: HighLowFormData) => {
     setIsLoading(true);
     try {
-      const dateString = dateSelected.toISOString().split('T')[0];
-      // await upsertHighLow({
-      //   high_content: data.high_content,
-      //   low_content: data.low_content,
-      //   date: dateString
-      // });
+      await createDailyHighLowExecute({
+        high_content: data.high_content,
+        low_content: data.low_content,
+        date: dateSelected.toISOString().split('T')[0],
+      });
       toast({
         title: 'Saved!',
         description: 'Your high and low have been saved.',
