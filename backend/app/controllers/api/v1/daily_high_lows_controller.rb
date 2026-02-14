@@ -4,11 +4,12 @@ module Api
       before_action :require_authentication
 
       def show
-        daily_high_low = current_user.daily_high_lows.find_by(date: params[:id])
+        date = params[:id] 
+        daily_high_low = current_user.daily_high_lows.find_by(date: date)
         if daily_high_low
           render json: daily_high_low, serializer: DailyHighLowSerializer
         else
-          render json: { high_content: nil, low_content: nil, date: params[:id] }
+          render json: { high_content: nil, low_content: nil, date: date }
         end
       end
 

@@ -85,20 +85,14 @@ export const HighLow = () => {
     };
     
     loadHighLow();
-  }, [dateSelected, reset, toast]);
+  }, [dateSelected]);
 
   useEffect(() => {
-    const keydown = (event: KeyboardEvent) => {
-      if (event.metaKey === true && event.key === "Enter") {
-        onSubmit(formData);
-      }
-    };
-
-    window.addEventListener("keydown", keydown);
-    return () => window.removeEventListener("keydown", keydown);
-  }, [dateSelected, getDailyHighLowExecute]);
-
-
+    reset({
+      high_content: dailyHighLow?.high_content || '',
+      low_content: dailyHighLow?.low_content || '',
+    });
+  }, [dailyHighLow, reset]);
 
   const onSubmit = async (data: HighLowFormData) => {
     setIsLoading(true);
