@@ -63,20 +63,26 @@ export const AppLayout = () => {
         <Sidebar.NavItem
           icon={CalendarIcon}
           label="Dashboard"
-          isActive={location.pathname === '/dashboard'}
-          onClick={() => navigate('/dashboard')}
+          isActive={location.pathname === "/dashboard"}
+          onClick={() => navigate("/dashboard")}
         />
         <Sidebar.NavItem
           icon={TargetIcon}
           label="Habit Tracker"
-          isActive={location.pathname === '/habit-tracker'}
-          onClick={() => navigate('/habit-tracker')}
+          isActive={location.pathname === "/habit-tracker"}
+          onClick={() => navigate("/habit-tracker")}
         />
         <Sidebar.NavItem
           icon={BookIcon}
           label="Daily High Low"
-          isActive={location.pathname === '/high-low'}
-          onClick={() => navigate('/high-low')}
+          isActive={location.pathname === "/high-low"}
+          onClick={() => navigate("/high-low")}
+        />
+        <Sidebar.NavItem
+          icon={BookIcon}
+          label="Kanban"
+          isActive={location.pathname === "/kanban"}
+          onClick={() => navigate("/kanban")}
         />
         {/* <Sidebar.NavItem
           icon={CalendarIcon}
@@ -94,7 +100,7 @@ export const AppLayout = () => {
 
       {/* Main Content - with Layout spacing */}
       <Layout>
-        <Header userName={userName}  />
+        <Header userName={userName} />
         <Outlet />
       </Layout>
     </Box>

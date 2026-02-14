@@ -9,6 +9,7 @@ import { HabitTracker } from './pages/HabitTracker';
 import { AppLayout } from './components/AppLayout';
 import { HighLow } from './pages/HighLow';
 import { LoginPage } from './pages/Login';
+import { Kanban } from './pages/Kanban';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/habit-tracker" element={<HabitTracker />} />
             <Route path="/high-low" element={<HighLow />} />
+            <Route path='kanban' element={<Kanban />} />
           </Route>
         </Routes>
       </BrowserRouter>
