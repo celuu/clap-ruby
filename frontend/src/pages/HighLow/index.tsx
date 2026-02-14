@@ -87,6 +87,17 @@ export const HighLow = () => {
     loadHighLow();
   }, [dateSelected, reset, toast]);
 
+  useEffect(() => {
+    const keydown = (event: KeyboardEvent) => {
+      if (event.metaKey === true && event.key === "Enter") {
+        onSubmit(formData);
+      }
+    };
+
+    window.addEventListener("keydown", keydown);
+    return () => window.removeEventListener("keydown", keydown);
+  }, [dateSelected, getDailyHighLowExecute]);
+
 
 
   const onSubmit = async (data: HighLowFormData) => {

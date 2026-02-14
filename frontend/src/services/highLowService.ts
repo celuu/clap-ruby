@@ -36,7 +36,7 @@ export const useCreateDailyHighLow = () => {
     try {
       const data = await fetchWithCredentials(`${API_ENDPOINTS.dailyHighLows}`, {
         method: 'POST',
-        body: JSON.stringify({ high_low: daily_high_lows }),
+        body: JSON.stringify({ daily_high_lows: daily_high_lows }),
       });
       setDailyHighLow(data);
     } catch (err: any) {
