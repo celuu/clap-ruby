@@ -1,11 +1,13 @@
-import { Box, Button, Heading, Select, HStack, IconButton } from "@chakra-ui/react";
+import { Box, Button, Heading, HStack } from "@chakra-ui/react";
 import { intervalDefaultData, Intervals, WorkoutType } from "./utils"
 import { useState } from "react"
-import { EditIcon } from "@chakra-ui/icons";
+import { useNavigate } from "react-router-dom";
+import { Timer } from "./Timer";
 
 
 export const HIITTimer = () => {
   const [data, setData] = useState<Intervals[]>(intervalDefaultData)
+  const navigate = useNavigate();
 
   const addInterval = () => {
     const copy = [...data];
@@ -58,7 +60,15 @@ export const HIITTimer = () => {
       <HStack justifyContent={"space-between"}>
         <Heading>Intervals</Heading>
         <Box>
-          <Button>Start Timer</Button>
+          <Button
+            onClick={() =>
+              navigate("/play-timer", {
+                state: { intervals: data },
+              })
+            }
+          >
+            Start Timer
+          </Button>
           <Button onClick={() => addInterval()} marginLeft={"10px"}>
             Add Interval
           </Button>

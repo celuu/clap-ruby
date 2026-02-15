@@ -11,6 +11,7 @@ import { HighLow } from './pages/HighLow';
 import { LoginPage } from './pages/Login';
 import { Kanban } from './pages/Kanban';
 import { HIITTimer } from './pages/HIITTimer';
+import { Timer } from './pages/HIITTimer/Timer';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/play-timer" element={<Timer />}/>
 
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
