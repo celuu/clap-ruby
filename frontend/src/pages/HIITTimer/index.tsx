@@ -2,8 +2,6 @@ import { Box, Button, Heading, HStack } from "@chakra-ui/react";
 import { intervalDefaultData, Intervals, WorkoutType } from "./utils"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { Timer } from "./Timer";
-
 
 export const HIITTimer = () => {
   const [data, setData] = useState<Intervals[]>(intervalDefaultData)
@@ -15,7 +13,7 @@ export const HIITTimer = () => {
       id: (data.length + 1).toString(),
       index: data.length + 1,
       name: "new interval",
-      time: 20,
+      time: 3,
       type: "workout"
     }
     copy.push(newItem)

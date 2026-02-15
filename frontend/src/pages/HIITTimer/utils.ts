@@ -13,7 +13,7 @@ export type Intervals = {
 export const intervalDefaultData: Intervals[] = [{
   id: "1",
   name: "interval 1",
-  time: 20,
+  time: 3,
   index: 1,
   type: "workout"
 }]
