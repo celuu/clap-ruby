@@ -84,6 +84,12 @@ export const AppLayout = () => {
           isActive={location.pathname === "/kanban"}
           onClick={() => navigate("/kanban")}
         />
+        <Sidebar.NavItem
+          icon={BookIcon}
+          label="HIIT Timer"
+          isActive={location.pathname === "/timer"}
+          onClick={() => navigate("/timer")}
+        />
         {/* <Sidebar.NavItem
           icon={CalendarIcon}
           label="Daily Schedule"
