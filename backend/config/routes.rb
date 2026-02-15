@@ -6,11 +6,13 @@ Rails.application.routes.draw do
       post '/login', to: 'sessions#create'
       delete '/logout', to: 'sessions#destroy'
       get '/current_user', to: 'sessions#show'
-      
-      # Profile routes
+
      resources :habits
      resources :habit_completions, only: [:create, :destroy]
-     resources :daily_high_lows, only: [:show, :create ]
+     resources :daily_high_lows, only: [:show, :create]
+     resources :columns, only: [:show, :create, :update, :destroy]
+     resources :tasks, only: [:create, :update, :destroy]
+
     end
   end
 end
