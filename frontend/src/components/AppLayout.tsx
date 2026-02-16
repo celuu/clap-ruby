@@ -90,6 +90,12 @@ export const AppLayout = () => {
           isActive={location.pathname === "/timer"}
           onClick={() => navigate("/timer")}
         />
+        <Sidebar.NavItem
+          icon={BookIcon}
+          label="Wordle"
+          isActive={location.pathname === "/wordle"}
+          onClick={() => navigate("/wordle")}
+        />
         {/* <Sidebar.NavItem
           icon={CalendarIcon}
           label="Daily Schedule"
