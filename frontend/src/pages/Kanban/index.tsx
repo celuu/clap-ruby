@@ -1,7 +1,18 @@
 import { Column, Task } from "@/types";
-import { Box, VStack, HStack, Card, Heading, Button, useToast } from "@chakra-ui/react";
+import {
+  Box,
+  VStack,
+  HStack,
+  Card,
+  Heading,
+  Button,
+  useToast,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { useCreateColumn, useGetColumns } from "../../services/kanbanService";
+import { useCreateColumn, useCreateTask, useDeleteColumn, useDeleteTask, useGetColumns } from "../../services/kanbanService";
+import { SmallCloseIcon } from "@chakra-ui/icons";
 
 
 export const Kanban = () => {
@@ -9,6 +20,22 @@ export const Kanban = () => {
   const [columnName, setColumnName] = useState<string>("")
   const {column, error, loading, execute} = useCreateColumn();
   const {column: getColumn, error: getColumError, loading: getColumnLoading, execute: getColumnExecute} = useGetColumns();
+  const {error: deleteColumError, loading: deleteColumnLoading, execute: deleteColumnExecute} = useDeleteColumn();
+  const [taskName, setTaskName] = useState<string>("")
+  const {
+    task: createTask,
+    error: addTaskError,
+    loading: addTaskLoading,
+    execute: addTaskExecute,
+  } = useCreateTask();
+    const {
+      error: deleteTaskError,
+      loading: deleteTaskLoading,
+      execute: deleteTaskExecute,
+    } = useDeleteTask();
+
+
+
   const toast = useToast();
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, id: string) => {
@@ -37,48 +64,79 @@ export const Kanban = () => {
 
   const addColumn = async () => {
     try {
-     await execute({
+     const newCol =  await execute({
         name: columnName,
         position: 3
       })
-            toast({
+      setDataset((prev) => [...prev, newCol]);
+      toast({
         title: 'Success',
         description: 'Column created successfully!',
         status: 'success',
       });
     } catch(err) {
-            toast({
-              title: "Error",
-              description: error || "Failed to create column",
-              status: "error",
-            });
+      toast({
+        title: "Error",
+        description: error || "Failed to create column",
+        status: "error",
+      });
     }
-
-    // const copy = [...dataset];
-    // const toAdd = {
-    //   id: String(dataset.length + 1),
-    //   name: "example",
-    //   position: dataset.length + 1,
-    //   tasks: []
-    // }
-    // copy.push(toAdd)
-    // setDataset(copy)
   }
 
-  const addTask = (column_id: string, newTask: string) => {
-    let createdTask = {
-      id: "10",
-      name: newTask,
-      position: 3,
-      column_id: column_id
+  const addTask = async (column_id: string, newTask: string) => {
+    try {
+      const task = await addTaskExecute({
+        name: newTask,
+        position: 3,
+        column_id: Number(column_id),
+      });
+      setDataset((prev) =>
+        prev.map((col) =>
+          col.id === column_id
+            ? { ...col, tasks: [...(col.tasks ?? []), task] }
+            : col,
+        ),
+      );
+    } catch {
+      console.error(error)
     }
-    setDataset((prev) =>
-      prev.map((col) =>
-        col.id === column_id
-          ? { ...col, tasks: [...(col.tasks ?? []), createdTask] }
-          : col,
-      ),
-    );
+  }
+
+    const deleteTask = async (taskId: string) => {
+      try {
+        await deleteTaskExecute(taskId);
+        setDataset((prev) =>
+          prev.map((col) => {
+            const hasTask = col.tasks?.some((t) => t.id === taskId);
+
+            if (!hasTask) return col;
+
+            return {
+              ...col,
+              tasks: col.tasks!.filter((t) => (t.id !== taskId)),
+            };
+          }),
+        );
+      } catch (err) {
+        toast({
+          title: "Error",
+          description: error || "Failed to delete column",
+          status: "error",
+        });
+      }
+    };
+
+  const deleteColumn = async (columnId: string) => {
+    try {
+      await deleteColumnExecute(columnId);
+      setDataset((prev) => prev.filter((c) => c.id !== columnId));
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: error || "Failed to delete column",
+        status: "error",
+      });
+    }
   }
 
   console.log(dataset, "data");
@@ -88,7 +146,7 @@ export const Kanban = () => {
       <HStack justifyContent={"space-between"}>
         <Heading>Kanban</Heading>
         <Box>
-          <input onChange={(e) => setColumnName(e.target.value)}/>
+          <input onChange={(e) => setColumnName(e.target.value)} />
           <Button
             onClick={() => {
               addColumn();
@@ -102,38 +160,39 @@ export const Kanban = () => {
       <HStack width={"100%"} justifyContent={"space-between"}>
         {dataset.map((data: Column) => (
           <VStack>
-            <Box
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => handleDrop(e, "todo")}
-            >
-              {data.name}
-            </Box>
-            <Button onClick={() => addTask(data.id, "hello")}>Add Task</Button>
+            <HStack>
+              <Box
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => handleDrop(e, "todo")}
+              >
+                {data.name}
+              </Box>
+              <IconButton
+                aria-label="delete-column"
+                onClick={() => deleteColumn(data.id)}
+                icon={<SmallCloseIcon />}
+              ></IconButton>
+            </HStack>
+            <input onChange={(e) => setTaskName(e.target.value)} />
+            <Button onClick={() => addTask(data.id, taskName)}>Add Task</Button>
 
             {data?.tasks?.map((task) => (
               <Card
                 draggable={true}
                 onDragStart={(e) => handleDragStart(e, task.id)}
               >
-                {task.name}
+                <HStack>
+                  <Text>{task.name}</Text>
+                  <IconButton
+                    aria-label="delete-column"
+                    onClick={() => deleteTask(task.id)}
+                    icon={<SmallCloseIcon />}
+                  ></IconButton>
+                </HStack>
               </Card>
             ))}
           </VStack>
         ))}
-        {/* <Box
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => handleDrop(e, "todo")}
-          >
-            To-do
-          </Box>
-          {todos.map((item) => (
-            <Card
-              draggable={true}
-              onDragStart={(e) => handleDragStart(e, item.id)}
-            >
-              {item.name}
-            </Card>
-          ))} */}
       </HStack>
     </Box>
   );

@@ -32,7 +32,7 @@ module Api
       end
 
       def destroy
-        column = current_user.columns.find_by(id: parmas[:id])
+        column = current_user.columns.find_by(id: params[:id])
         column.destroy!
         head :no_content
       end

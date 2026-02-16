@@ -88,16 +88,15 @@ export const useUpdateColumn = () => {
 export const useDeleteColumn = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null)
-  const execute = useCallback(async (): Promise<Column> => {
+  const execute = useCallback(async (columnId: string): Promise<void> => {
     setLoading(true);
     setError(null)
     try {
-      const data = await fetchWithCredentials(API_ENDPOINTS.columns, {
+      await fetchWithCredentials(`${API_ENDPOINTS.columns}/${columnId}`, {
         method: 'DELETE',
       })
-      return data.status
     } catch (err: any) {
-      const errorMessage = err.message || 'Failed to update column';
+      const errorMessage = err.message || 'Failed to delete column';
       setError(errorMessage);
       throw err;
     } finally {
@@ -120,7 +119,7 @@ export const useCreateTask = () => {
     setLoading(true);
     setError(null)
     try {
-      const data = await fetchWithCredentials(API_ENDPOINTS.columns, {
+      const data = await fetchWithCredentials(API_ENDPOINTS.tasks, {
         method: 'POST',
         body: JSON.stringify({ task })
       })
@@ -150,7 +149,7 @@ export const useUpdateTask = () => {
     setLoading(true);
     setError(null)
     try {
-      const data = await fetchWithCredentials(API_ENDPOINTS.columns, {
+      const data = await fetchWithCredentials(API_ENDPOINTS.tasks, {
         method: 'PATCH',
         body: JSON.stringify({ task })
       })
@@ -171,14 +170,13 @@ export const useUpdateTask = () => {
 export const useDeleteTask = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null)
-  const execute = useCallback(async (): Promise<Column> => {
+  const execute = useCallback(async (task_id: string): Promise<void> => {
     setLoading(true);
     setError(null)
     try {
-      const data = await fetchWithCredentials(API_ENDPOINTS.columns, {
+      await fetchWithCredentials(`${API_ENDPOINTS.tasks}/${task_id}`, {
         method: 'DELETE',
       })
-      return data.status
     } catch (err: any) {
       const errorMessage = err.message || 'Failed to update column';
       setError(errorMessage);
