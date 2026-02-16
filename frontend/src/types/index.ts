@@ -45,7 +45,8 @@ export interface Column {
   id: string;
   name: string;
   position: number;
-  tasks: Task[] | null;
+  tasks: Task[];
+  user_id: string;
 }
 
 export interface Task {

@@ -2,13 +2,17 @@ module Api
   module V1
     class ColumnsController < ApplicationController
 
-      def show
+      def index
         current_user_columns = current_user.columns
-        render json: current_user_columns, serializer: ColumnSerializer
+        if !current_user_columns
+          return []
+        else
+          render json: current_user_columns, each_serializer: ColumnSerializer
+        end
       end
 
       def create
-        new_column = Column.create!(column_params)
+        new_column = Column.create!(column_params.merge(user_id: current_user.id))
         render json: new_column, serializer: ColumnSerializer, status: :created
       end
 

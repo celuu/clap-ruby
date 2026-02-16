@@ -1,12 +1,15 @@
 import { Column, Task } from "@/types";
-import { Box, VStack, HStack, Card, Heading, Button } from "@chakra-ui/react";
-import { useState } from "react";
-import { data } from "./utils";
+import { Box, VStack, HStack, Card, Heading, Button, useToast } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { useCreateColumn, useGetColumns } from "../../services/kanbanService";
 
 
 export const Kanban = () => {
-  const exampleData: Column[] = data;
-  const [dataset, setDataset] = useState<Column[]>(exampleData)
+  const [dataset, setDataset] = useState<Column[]>([]);
+  const [columnName, setColumnName] = useState<string>("")
+  const {column, error, loading, execute} = useCreateColumn();
+  const {column: getColumn, error: getColumError, loading: getColumnLoading, execute: getColumnExecute} = useGetColumns();
+  const toast = useToast();
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, id: string) => {
     e.dataTransfer.setData("text/plain", id);
@@ -23,16 +26,43 @@ export const Kanban = () => {
         );
   };
 
-  const addColumn = () => {
-    const copy = [...dataset];
-    const toAdd = {
-      id: String(dataset.length + 1),
-      name: "example",
-      position: dataset.length + 1,
-      tasks: []
+  useEffect( () => {
+    const loadColumns = async () => {
+      const columns = await getColumnExecute();
+      setDataset(columns)
     }
-    copy.push(toAdd)
-    setDataset(copy)
+
+    loadColumns();
+  }, [])
+
+  const addColumn = async () => {
+    try {
+     await execute({
+        name: columnName,
+        position: 3
+      })
+            toast({
+        title: 'Success',
+        description: 'Column created successfully!',
+        status: 'success',
+      });
+    } catch(err) {
+            toast({
+              title: "Error",
+              description: error || "Failed to create column",
+              status: "error",
+            });
+    }
+
+    // const copy = [...dataset];
+    // const toAdd = {
+    //   id: String(dataset.length + 1),
+    //   name: "example",
+    //   position: dataset.length + 1,
+    //   tasks: []
+    // }
+    // copy.push(toAdd)
+    // setDataset(copy)
   }
 
   const addTask = (column_id: string, newTask: string) => {
@@ -58,6 +88,7 @@ export const Kanban = () => {
       <HStack justifyContent={"space-between"}>
         <Heading>Kanban</Heading>
         <Box>
+          <input onChange={(e) => setColumnName(e.target.value)}/>
           <Button
             onClick={() => {
               addColumn();

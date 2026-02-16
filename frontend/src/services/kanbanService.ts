@@ -1,4 +1,4 @@
-import { API_ENDPOINTS, fetchWithCredentials } from "@/config/api";
+import { API_ENDPOINTS, fetchWithCredentials } from "../config/api";
 import { Column, Task } from "@/types"
 import { useCallback, useState } from "react"
 
@@ -6,15 +6,12 @@ export const useGetColumns = () => {
   const [column, setColumn] = useState<Column | null>(null)
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null)
-  const execute = useCallback(async (column: {
-    user_id: number;
-  }): Promise<Column> => {
+  const execute = useCallback(async (): Promise<Column[]> => {
     setLoading(true);
     setError(null)
     try {
       const data = await fetchWithCredentials(API_ENDPOINTS.columns, {
-        method: 'GET',
-        body: JSON.stringify({ column })
+        method: 'GET'
       })
       setColumn(data);
       return data
@@ -37,7 +34,6 @@ export const useCreateColumn = () => {
   const execute = useCallback(async( column: {
     name: string;
     position: number;
-    user_id: number;
   }): Promise<Column> => {
     setLoading(true);
     setError(null)

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
      resources :habits
      resources :habit_completions, only: [:create, :destroy]
      resources :daily_high_lows, only: [:show, :create]
-     resources :columns, only: [:show, :create, :update, :destroy]
+     resources :columns, only: [:index, :create, :update, :destroy]
      resources :tasks, only: [:create, :update, :destroy]
 
     end
