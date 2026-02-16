@@ -1,49 +1,47 @@
-export type KanbanType = "todo" | "pending" | "done";
+import { Column } from "@/types";
 
-export type KanbanData = {
+
+export type KanbanColumn = {
   id: string;
   name: string;
-  type: KanbanType;
 };
 
-export const data: KanbanData[] = [
+export const data: Column[] = [
   { 
     id: "1",
-    name: "hello",
-    type: "todo"
+    name: "todo",
+    position: 1,
+    tasks: [{
+      id: "1",
+      name: "todoing",
+      position: 1,
+      column_id: "1"
+    }]
   },
   {
     id: "2",
-    name: "hello",
-    type: "todo"
+    name: "pending",
+    position: 2
+    ,
+    tasks: [{
+      id: "1",
+      name: "topending",
+      position: 1,
+      column_id: "2"
+    }]
   },
   {
     id: "3",
-    name: "pending",
-    type: "pending"
-  },
-  {
-    id: "4",
-    name: "pending",
-    type: "pending"
-  },
-  {
-    id: "5",
     name: "done",
-    type: "done"
+    position: 3,
+    tasks: [
+      {
+        id: "1",
+        name: "todone",
+        position: 1,
+        column_id: "3"
+      }
+    ]
   },
-  {
-    id: "6",
-    name: "done",
-    type: "done"
-  }, {
-    id: "7",
-    name: "done",
-    type: "done"
-  },
-  {
-    id: "8",
-    name: "todo",
-    type: "todo"
-  }
+ 
 ]

@@ -8,10 +8,10 @@ export const API_ENDPOINTS = {
   logout: `${API_BASE_URL}/api/v1/logout`,
   currentUser: `${API_BASE_URL}/api/v1/current_user`,
   
-  // Habit endpoints
   habits: `${API_BASE_URL}/api/v1/habits`,
   habitCompletions: `${API_BASE_URL}/api/v1/habit_completions`,
   dailyHighLows: `${API_BASE_URL}/api/v1/daily_high_lows`,
+  columns: `${API_BASE_URL}/api/v1/columns`
 };
 
 // Helper function for API calls with credentials

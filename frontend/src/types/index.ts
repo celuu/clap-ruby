@@ -41,3 +41,16 @@ export interface Profile {
   created_at: string;
   updated_at: string;
 }
+export interface Column {
+  id: string;
+  name: string;
+  position: number;
+  tasks: Task[] | null;
+}
+
+export interface Task {
+  id: string;
+  name: string;
+  position: number;
+  column_id: string;
+}
