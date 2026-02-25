@@ -102,12 +102,19 @@ export const AppLayout = () => {
           isActive={location.pathname === '/schedule'}
           onClick={() => navigate('/schedule')}
         />
+        // <Sidebar.NavItem
+        //   icon={DumbbellIcon}
+        //   label="Workout Plans"
+        //   isActive={location.pathname === '/workouts'}
+        //   onClick={() => navigate('/workouts')}
+        // /> */}
+
         <Sidebar.NavItem
           icon={DumbbellIcon}
-          label="Workout Plans"
-          isActive={location.pathname === '/workouts'}
-          onClick={() => navigate('/workouts')}
-        /> */}
+          label="Settings"
+          isActive={location.pathname === "/settings"}
+          onClick={() => navigate("/settings")}
+        />
       </Sidebar>
 
       {/* Main Content - with Layout spacing */}
