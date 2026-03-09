@@ -61,10 +61,9 @@ const toast = useToast();
         <Checkbox
           isChecked={habit.is_completed}
           isDisabled={isDisabled}
-          onChange={(e) => onChange?.(e.target.checked)}
+          onChange={(e) => handleCreateHabitCompletion(habit.id)}
           colorScheme="green"
           size="lg"
-          onClick={() => handleCreateHabitCompletion(habit.id)}
           />
         )}
       <Text
