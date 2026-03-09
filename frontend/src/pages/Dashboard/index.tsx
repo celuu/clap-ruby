@@ -16,6 +16,8 @@ import { Card } from '../../components/Card';
 import { SectionHeader } from '../../components/SectionHeader';
 import { ScheduleItem } from '../../components/ScheduleItem';
 import { HabitItem } from '../../components/HabitItem';
+import { useGetHabits } from '../../services/habitService';
+import { useEffect } from 'react';
 
 // Custom icons as components
 const FireIcon = () => (
@@ -50,6 +52,13 @@ const TargetIcon = () => (
 
 export const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { habits, error, loading, execute } = useGetHabits();
+
+  useEffect(() => {
+    execute();
+  }, [execute]);
+
+  console.log(habits, "habits");
 
   return (
     <>
@@ -130,10 +139,9 @@ export const Dashboard = () => {
                   </Text>
                 </Box>
                 <VStack spacing={2} align="stretch">
-                  <HabitItem label="Meditate (10m)" isCompleted />
-                  <HabitItem label="Read 20 Pages" isCompleted />
-                  <HabitItem label="No Sugar" />
-                  <HabitItem label="Hydrate 3L" />
+                  {habits.map((habit) => (
+                    <HabitItem key={habit.id} label={habit.label} isCompleted={habit.is_completed} />
+                  ))}
                 </VStack>
               </Card>
             </GridItem>

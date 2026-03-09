@@ -20,6 +20,8 @@ export const useGetHabits = () => {
     }
   }, []);
 
+  console.log(habits, "habits");
+
   return { habits, error, loading, execute };
 };
 

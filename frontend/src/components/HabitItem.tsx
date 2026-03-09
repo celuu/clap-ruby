@@ -1,5 +1,6 @@
 import { HStack, Text, Checkbox, Icon } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
+import { useCreateHabitCompletion } from '../services/habitService';
 
 interface HabitItemProps {
   label: string;
@@ -14,6 +15,7 @@ export const HabitItem = ({
   isDisabled = false,
   onChange,
 }: HabitItemProps) => {
+  const { createHabitCompletion, error, loading, execute } = useCreateHabitCompletion();
   return (
     <HStack
       w="full"
