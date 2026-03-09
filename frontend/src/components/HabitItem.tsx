@@ -1,21 +1,39 @@
-import { HStack, Text, Checkbox, Icon } from '@chakra-ui/react';
+import { HStack, Text, Checkbox, Icon, useToast } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { useCreateHabitCompletion } from '../services/habitService';
+import { Habit } from '@/types';
 
 interface HabitItemProps {
-  label: string;
-  isCompleted?: boolean;
+  habit: Habit;
   isDisabled?: boolean;
   onChange?: (checked: boolean) => void;
 }
 
 export const HabitItem = ({
-  label,
-  isCompleted = false,
+  habit,
   isDisabled = false,
   onChange,
 }: HabitItemProps) => {
-  const { createHabitCompletion, error, loading, execute } = useCreateHabitCompletion();
+  const { habitCompletion, error, loading, execute } = useCreateHabitCompletion();
+const toast = useToast();
+  const handleCreateHabitCompletion = async (habit_id: string) => {
+    try {
+      await execute({ habit_id: habit_id });
+      if (habitCompletion) {
+        toast({
+          title: 'Success',
+          description: 'Habit completion created successfully!',
+          status: 'success',
+        });
+      }
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: error || 'Failed to create habit completion',
+        status: 'error',
+      });
+  }
+}
   return (
     <HStack
       w="full"
@@ -23,11 +41,11 @@ export const HabitItem = ({
       px={4}
       spacing={4}
       borderRadius="lg"
-      bg={isCompleted ? 'gray.50' : 'transparent'}
+      bg={habit.is_completed ? 'gray.50' : 'transparent'}
       opacity={isDisabled ? 0.5 : 1}
       transition="all 0.2s"
     >
-      {isCompleted ? (
+      {habit.is_completed ? (
         <HStack
           bg="green.500"
           borderRadius="md"
@@ -41,21 +59,22 @@ export const HabitItem = ({
         </HStack>
       ) : (
         <Checkbox
-          isChecked={isCompleted}
+          isChecked={habit.is_completed}
           isDisabled={isDisabled}
           onChange={(e) => onChange?.(e.target.checked)}
           colorScheme="green"
           size="lg"
-        />
-      )}
+          onClick={() => handleCreateHabitCompletion(habit.id)}
+          />
+        )}
       <Text
         fontSize="md"
         fontWeight="medium"
         color={isDisabled ? 'gray.400' : 'gray.800'}
-        textDecoration={isCompleted ? 'line-through' : 'none'}
+        textDecoration={habit.is_completed ? 'line-through' : 'none'}
         flex={1}
       >
-        {label}
+        {habit.label}
       </Text>
     </HStack>
   );

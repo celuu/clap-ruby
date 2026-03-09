@@ -58,8 +58,6 @@ export const Dashboard = () => {
     execute();
   }, [execute]);
 
-  console.log(habits, "habits");
-
   return (
     <>
       <Container maxW="container.xl" py={8}>
@@ -140,7 +138,7 @@ export const Dashboard = () => {
                 </Box>
                 <VStack spacing={2} align="stretch">
                   {habits.map((habit) => (
-                    <HabitItem key={habit.id} label={habit.label} isCompleted={habit.is_completed} />
+                    <HabitItem key={habit.id} habit={habit} />
                   ))}
                 </VStack>
               </Card>
